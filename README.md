@@ -5,10 +5,9 @@ Swedish-made URL enlarger for men.
 ## Features
 
 - Enlarges regular URLs by three or four.
-- Unverified secure nested symmetric Fernet encryption.
-- Guaranteed compatibility with Internet Explorer. \*
-
-_\* probably_
+- Probably works with every URL.
+- Untested but likely incompatibility with Internet Explorer.
+- Multi-round secure symmetric Fernet encryption using dual 128bit AES-CBC and SHA256 HMAC.
 
 ## License
 

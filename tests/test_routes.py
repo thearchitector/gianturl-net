@@ -8,7 +8,7 @@ client = TestClient(app)
 
 @pytest.fixture(scope="session")
 def mock_enlarged():
-    yield (f"/{encode('https://www.eliasfgabriel.com')}")
+    yield f"/{encode('https://www.eliasfgabriel.com')}"
 
 
 def test_enlarge_pass():
@@ -17,7 +17,7 @@ def test_enlarge_pass():
 
     res = resp.json()
     assert res["original"] == "https://www.eliasfgabriel.com"
-    assert res["improvement"] == "6586.21%"
+    assert res["improvement"] == "2462.07%"
     assert res["enlarged"].startswith("http://testserver/")
 
 

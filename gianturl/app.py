@@ -52,6 +52,5 @@ async def redirect(token: str):
             redirection, status_code=status.HTTP_301_MOVED_PERMANENTLY
         )
     except Exception as e:
-        print(e)
         # TODO: should return nice 400 page
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
