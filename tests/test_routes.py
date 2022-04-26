@@ -1,17 +1,14 @@
 import pytest
 from fastapi.testclient import TestClient
 from gianturl.app import app
+from gianturl.crypto import encode
 
 client = TestClient(app)
 
 
 @pytest.fixture(scope="session")
 def mock_enlarged():
-    # https://www.eliasfgabriel.com over 7 rounds
-    yield (
-        "/V1ZWb1UwMUhUa2xVVkZwTlpWUnJlbHBFVG1wa1ZuQllaVWhDV2xkRk5YUlhha3BIWVZkT2RHSkhlR"
-        "2xSZWxaeFdXcEpkMUJSUFQwPQ==?r=4"
-    )
+    yield (f"/{encode('https://www.eliasfgabriel.com')}")
 
 
 def test_enlarge_pass():
@@ -20,9 +17,8 @@ def test_enlarge_pass():
 
     res = resp.json()
     assert res["original"] == "https://www.eliasfgabriel.com"
-    assert res["improvement"] == "3762.07%"
+    assert res["improvement"] == "6586.21%"
     assert res["enlarged"].startswith("http://testserver/")
-    assert res["enlarged"].endswith("?r=12")
 
 
 def test_enlarge_loop():
@@ -55,9 +51,5 @@ def test_redirect_pass(mock_enlarged):
 def test_redirect_invalid():
     with client:
         resp = client.get("/invalidurl")
-        assert resp.status_code == 400
-        assert resp.json() == {"detail": "Bad Request"}
-
-        resp = client.get("/invalidurl?r=1")
         assert resp.status_code == 400
         assert resp.json() == {"detail": "Bad Request"}
