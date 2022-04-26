@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "gianturl"
+version = "0.0.1"
+description = "General purpose URL enlarger"
+authors = ["Elias Gabriel <me@eliasfgabriel.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+fastapi = "^0.75.2"
+uvicorn = {extras = ["standard"], version = "^0.17.6"}
+orjson = "^3.6.8"
+aiofiles = "^0.8.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+requests = "^2.27.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
