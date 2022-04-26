@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "gianturl"
 version = "0.0.1"
-description = "General purpose URL enlarger"
+description = "Swedish-made URL enlarger for men."
 authors = ["Elias Gabriel <me@eliasfgabriel.com>"]
 license = "MIT"
 

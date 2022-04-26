@@ -1,11 +1,14 @@
 # GiantURL.net
 
-General purpose URL enlarger.
+Swedish-made URL enlarger for men.
 
 ## Features
 
-- Reverses TinyURLs.
-- Enlarges regular URLs.
+- Enlarges regular URLs by three or four.
+- Completely insecure.
+- Guaranteed compatibility with Internet Explorer. \*
+
+_\* probably_
 
 ## License
 
