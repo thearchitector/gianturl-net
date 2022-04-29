@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet, MultiFernet
 from .config import settings
 
 APPROX_FERNET_OVERHEAD = 2
-fernet = MultiFernet([Fernet(k) for k in settings.fernet_keys])
+fernet = MultiFernet([Fernet(k.encode()) for k in settings.fernet_keys])
 
 
 def encode(url: str) -> Optional[str]:

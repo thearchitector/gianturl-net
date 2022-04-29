@@ -23,12 +23,17 @@ app = FastAPI(
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT",
     },
-    docs_url=None,
-    redoc_url="/docs",
+    redoc_url=None,
+    openapi_tags=[
+        {
+            "name": "urls",
+            "description": "Operations on and relating to URLs.",
+        }
+    ],
 )
 
 
-@app.get("/api")
+@app.get("/api", tags=["urls"])
 async def enlarge(request: Request, url: str):
     """
     Validates and enlarges the given url through rounded dual-step symmetric Fernet
@@ -57,7 +62,7 @@ async def enlarge(request: Request, url: str):
     )
 
 
-@app.get("/{token}")
+@app.get("/{token}", tags=["urls"])
 async def redirect(token: str):
     """
     Accept a URL encoding, parse it, and permanently redirect the request
@@ -76,4 +81,4 @@ async def redirect(token: str):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
 
-app.mount("/", StaticFiles(directory="ui/public", html=True), name="home")
+app.mount("/", StaticFiles(directory="ui", html=True), name="home")
