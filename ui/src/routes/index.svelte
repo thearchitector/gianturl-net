@@ -1,14 +1,22 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
-    import { SvelteToast, toast } from "@zerodevx/svelte-toast";
+    import Icon from "svelte-awesome";
+    import {
+        undo,
+        link,
+        externalLink,
+        copy,
+        check,
+    } from "svelte-awesome/icons";
 
     let showURL: boolean = false;
     let originalURL: string = "";
     let longerURL: string = "";
     let percentLarger: string = "";
-
     let hasError: boolean = false;
     let errorMsg: string = "";
+
+    let hasCopied: boolean = false;
 
     async function enlargeURL() {
         let original = (document.getElementById("shortURL") as HTMLInputElement)
@@ -27,17 +35,12 @@
         }
     }
 
-    function copyText() {
-        toast.push("Copied to clipboard", {
-            duration: 2000,
-            theme: {
-                "--toastBackground": "#48BB78",
-                "--toastBarBackground": "#2F855A",
-            },
-        });
-
+    function copyText(e: MouseEvent) {
         let copyText = document.getElementById("longerURL")! as HTMLDivElement;
         navigator.clipboard.writeText(copyText.innerText);
+        hasCopied = true;
+
+        setTimeout(() => (hasCopied = false), 1500);
     }
 </script>
 
@@ -45,11 +48,11 @@
     <title>GiantURL.net - enlarge that short url into a giant url</title>
 </svelte:head>
 
-<SvelteToast />
-
 <div class="container">
     <section>
-        <h1>GiantURL</h1>
+        <h1>
+            <Icon data={link} scale={3} /> GiantURL
+        </h1>
         <div class="row">
             <div class="four columns">
                 <p>
@@ -61,6 +64,8 @@
                     public and free. Read <a href="/docs" rel="external">here</a
                     >.
                 </p>
+                <br />
+                <p>&copy; 2022 Elias Gabriel</p>
             </div>
             <div class="eight columns">
                 {#if !showURL}
@@ -103,11 +108,22 @@
                         </label>
                         <div class="u-full-width output" id="longerURLWrap">
                             <span id="longerURL">{longerURL}</span>
-                            <button on:click={copyText}>Copy</button>
+                            <button
+                                disabled={hasCopied}
+                                class:hasCopied
+                                on:click={copyText}
+                            >
+                                <Icon data={hasCopied ? check : copy} />
+                            </button>
                         </div>
 
-                        <a class="button" href={longerURL} rel="external">
-                            Visit Link
+                        <a
+                            class="button"
+                            href={longerURL}
+                            rel="external"
+                            target="_blank"
+                        >
+                            <Icon data={externalLink} /> Visit Link
                         </a>
                         &nbsp;
                         <a
@@ -115,7 +131,7 @@
                             href="/"
                             sveltekit:reload
                         >
-                            Enlarge another
+                            Enlarge another <Icon data={undo} />
                         </a>
                     </div>
                 {/if}
@@ -154,8 +170,20 @@
     }
 
     #longerURLWrap > button {
-        padding: 0 5px;
+        padding: 0px;
         float: right;
         margin-top: 1rem;
+        width: 3rem;
+        transition: 0.25s;
+    }
+
+    #longerURLWrap > button.hasCopied {
+        border-color: #35b950;
+        color: #35b950;
+    }
+
+    :global(svg.fa-icon) {
+        vertical-align: text-bottom;
+        overflow: visible;
     }
 </style>
