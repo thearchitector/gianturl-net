@@ -12,7 +12,7 @@ GiantURL enlarges your pesky small URLs by three or four, securely, uniquely, an
 
 ## License
 
-Copyright <YEAR> <COPYRIGHT HOLDER>
+Copyright (c) 2022, Elias Gabriel
 
 Redistribution and use in source and binary forms, with or without modification, are permitted
 under the conditions of the [BSD-3-Clause license](./LICENSE).
