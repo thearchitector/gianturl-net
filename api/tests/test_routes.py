@@ -13,7 +13,7 @@ def mock_enlarged():
 
 
 def test_enlarge_pass():
-    resp = client.get("/api?url=https://www.eliasfgabriel.com")
+    resp = client.post("/api?url=https://www.eliasfgabriel.com")
     assert resp.status_code == 200
 
     res = resp.json()
@@ -23,13 +23,13 @@ def test_enlarge_pass():
 
 
 def test_enlarge_loop():
-    resp = client.get("/api?url=http://testserver/banana")
+    resp = client.post("/api?url=http://testserver/banana")
     assert resp.status_code == 422
     assert resp.json() == {"detail": (INFINITE_LOOP.detail)}
 
 
 def test_enlarge_toolong():
-    resp = client.get(f"/api?url={'a' * 1001}")
+    resp = client.post(f"/api?url={'a' * 1001}")
     assert resp.status_code == 422
     assert resp.json() == {"detail": URL_TOO_LARGE.detail}
 

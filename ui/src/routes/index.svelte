@@ -19,19 +19,39 @@
     let hasCopied: boolean = false;
 
     async function enlargeURL() {
-        let original = (document.getElementById("shortURL") as HTMLInputElement)
-            .value;
-        let response = await fetch(`/api?url=${encodeURIComponent(original)}`);
-        let json = await response.json();
+        let csrftoken = "";
+        document.cookie.split(";").forEach((c) => {
+            if (c.indexOf("__HOST-csrftoken") == 0) csrftoken = c.substring(17);
+        });
 
-        if (response.ok) {
-            originalURL = json["original"];
-            percentLarger = json["improvement"];
-            longerURL = json["enlarged"];
-            showURL = true;
-        } else {
+        try {
+            let original = (
+                document.getElementById("shortURL") as HTMLInputElement
+            ).value;
+            let response = await fetch(
+                `/api?url=${encodeURIComponent(original)}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "x-csrftoken": csrftoken,
+                    },
+                }
+            );
+            let json = await response.json();
+
+            if (response.ok) {
+                originalURL = json["original"];
+                percentLarger = json["improvement"];
+                longerURL = json["enlarged"];
+                showURL = true;
+            } else {
+                hasError = true;
+                errorMsg = json["detail"];
+            }
+        } catch (error) {
             hasError = true;
-            errorMsg = json["detail"];
+            errorMsg =
+                "Network error: could not reach the API. Please check your internet connection.";
         }
     }
 
@@ -104,7 +124,7 @@
                             {originalURL}
                         </div>
                         <label for="longerURLWrap">
-                            GiantURL ({percentLarger} larger)
+                            GiantURL ({percentLarger}% larger)
                         </label>
                         <div class="u-full-width output" id="longerURLWrap">
                             <span id="longerURL">{longerURL}</span>

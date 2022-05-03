@@ -1,10 +1,7 @@
 .mypy_cache
 .pytest_cache
 __pycache__
-api/ui
 
 ui/node_modules
 ui/.svelte-kit
-ui/public
-
-*.env
+ui/build
