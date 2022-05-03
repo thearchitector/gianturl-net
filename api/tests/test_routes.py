@@ -9,7 +9,7 @@ client = TestClient(app)
 
 @pytest.fixture(scope="session")
 def mock_enlarged():
-    yield f"/{encode('https://www.eliasfgabriel.com')}"
+    yield f"/r/{encode('https://www.eliasfgabriel.com')}"
 
 
 def test_enlarge_pass():
@@ -18,7 +18,7 @@ def test_enlarge_pass():
 
     res = resp.json()
     assert res["original"] == "https://www.eliasfgabriel.com"
-    assert res["improvement"] == "2462.07%"
+    assert res["improvement"] == 2468
     assert res["enlarged"].startswith("http://testserver/")
 
 
@@ -46,6 +46,6 @@ def test_redirect_pass(mock_enlarged):
 
 def test_redirect_invalid():
     with client:
-        resp = client.get("/invalidurl")
+        resp = client.get("/r/invalidurl")
         assert resp.status_code == 400
-        assert resp.json() == {"detail": "Bad Request"}
+        assert resp.json()["detail"].startswith("'invalidurl' is not a valid URL token")

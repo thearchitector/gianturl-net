@@ -31,21 +31,22 @@ app = FastAPI(
 )
 
 # rate limiting and csrf protection middlewares
-app.add_middleware(
-    RateLimitMiddleware,
-    authenticate=rate_identifier,
-    backend=SlidingRedisBackend(settings.redis_host),
-    config={
-        r"^/api": [Rule(hour=25)],
-    },
-)
-app.add_middleware(
-    ORJSONCSRFMiddleware,
-    secret=settings.csrf_secret,
-    cookie_name="__HOST-csrftoken",
-    cookie_secure=True,
-    cookie_samesite="Strict",
-)
+if settings.env == "production":
+    app.add_middleware(
+        RateLimitMiddleware,
+        authenticate=rate_identifier,
+        backend=SlidingRedisBackend(settings.redis_host),
+        config={
+            r"^/api": [Rule(hour=25)],
+        },
+    )
+    app.add_middleware(
+        ORJSONCSRFMiddleware,
+        secret=settings.csrf_secret,
+        cookie_name="__HOST-csrftoken",
+        cookie_secure=True,
+        cookie_samesite="Strict",
+    )
 
 
 @app.post(

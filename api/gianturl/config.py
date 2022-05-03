@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     max_candidate_length: int = 1000
     csrf_secret: str = "csrftokensecret"
     redis_host: str = "redis"
+    env: str = "development"
 
 
 settings = Settings()

@@ -22,9 +22,11 @@ jobs:
           path: |
             ${{ env.POETRY_CACHE_DIR }}
             .venv
-          key: linting-poetry-${{ hashFiles('poetry.lock') }}
+          key: linting-poetry-${{ hashFiles('api/poetry.lock') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./api
         run: poetry install -n
       - name: Run tests
+        working-directory: ./api
         run: poetry run pytest -svv
