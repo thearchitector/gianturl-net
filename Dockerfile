@@ -14,7 +14,7 @@ COPY ui /ui
 RUN pnpm run build
 
 
-FROM python:3.7-slim as production
+FROM python:3.8-slim as production
 
 # copy boot scripts from remote
 COPY --from=tiangolo/uvicorn-gunicorn:python3.7 /start-reload.sh /start-reload.sh

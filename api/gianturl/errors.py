@@ -1,5 +1,10 @@
 from fastapi import HTTPException, status
 
+BAD_URL = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail="This URL doesn't look quite right. Did you type it correctly?",
+)
+
 INFINITE_LOOP = HTTPException(
     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
     detail="Within this URL I see a possibility for infinite loops, where there"

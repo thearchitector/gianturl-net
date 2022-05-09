@@ -1,22 +1,24 @@
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import urlparse
 
+import validators
 from fastapi import FastAPI, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from ratelimit import RateLimitMiddleware, Rule
 from ratelimit.backends.slidingredis import SlidingRedisBackend
+from securecookies import SecureCookiesMiddleware
 
-from .auth import ORJSONCSRFMiddleware, rate_identifier
+from .auth import SecureCSRFMiddleware, rate_identifier
 from .config import settings
 from .encoding import decode, encode
-from .errors import INFINITE_LOOP, URL_TOO_LARGE
+from .errors import BAD_URL, INFINITE_LOOP, URL_TOO_LARGE
 from .models import EnlargeResponse
 
 app = FastAPI(
     title="GiantURL API",
     description="GiantURL enlarges your pesky small URLs by three or four, securely,"
     " uniquely, and forever.\n\nThis API is rate-limited to 25 request per hour.",
-    version="1.0.0",
+    version="1.1.0",
     contact={
         "name": "Elias Gabriel",
         "url": "https://www.eliasfgabriel.com",
@@ -41,12 +43,14 @@ if settings.env == "production":
         },
     )
     app.add_middleware(
-        ORJSONCSRFMiddleware,
+        SecureCSRFMiddleware,
         secret=settings.csrf_secret,
-        cookie_name="__HOST-csrftoken",
+        cookie_secrets=[settings.cookie_secret],
+        cookie_name="__Host-csrftoken",
         cookie_secure=True,
-        cookie_samesite="Strict",
+        cookie_samesite="strict",
     )
+    app.add_middleware(SecureCookiesMiddleware, secrets=[settings.cookie_secret])
 
 
 @app.post(
@@ -63,7 +67,7 @@ async def enlarge(
     url: str = Query(
         ...,
         description="The short URL to encode. This URL is never internally visited"
-        ", and thus is not checked and may be invalid.",
+        ", and thus is not checked and may not resolve.",
     ),
 ):
     """
@@ -71,11 +75,29 @@ async def enlarge(
     symmetric Fernet encryption. URLs cannot be self-referencing. Encoding may fail
     if the original URL is already too long.
 
-    This endpoint is dumb. It will not check if the URLs point to valid sources.
+    This endpoint pretty dumb. It will not check if the URLs point to a resource that
+    resolves, and only checks if the URL is of the fairly standard form
+    "[scheme://]netloc[/path;parameters?query#fragment]", where all but "netloc" is
+    optional.
+
+    If "scheme://" is omitted, "http://" is automatically prepended. This behavior is
+    technically incorrect as per RFC 1808, but more inline with common use.
     """
-    # infinite loops cause problems, for them not for us
-    if url.startswith(f"{request.url.scheme}://{request.url.netloc}"):
+    urlparts = urlparse(url.strip())
+    if urlparts.scheme == request.url.scheme and urlparts.netloc == request.url.netloc:
+        # infinite loops cause problems, for them not for us
         raise INFINITE_LOOP
+    elif not urlparts.scheme:
+        # append http scheme if doesn't exist. note that this not technically correct
+        # as per RFC 1808 (which requires a preceding "//"), but more inline with
+        # common use
+        #
+        # https://datatracker.ietf.org/doc/html/rfc1808.html
+        url = f"http://{url}"
+
+    if not validators.url(url):
+        # if the url isn't valid
+        raise BAD_URL
 
     # encode the candidate with repeated fernet encryption
     candidate = encode(url)
@@ -122,7 +144,7 @@ async def redirect(
     """
     try:
         # decode and construct a valid url, adding the scheme if non exists
-        redirection = urlunparse(urlparse(decode(token), scheme="http"))
+        redirection = decode(token)
 
         # redirect for good, which is probably bad
         return redirection

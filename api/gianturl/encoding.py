@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet, MultiFernet
 
 from .config import settings
 
-APPROX_FERNET_OVERHEAD = 2
+APPROX_FERNET_OVERHEAD = 2  # limit is about 1.89
 fernet = MultiFernet([Fernet(k.encode()) for k in settings.fernet_keys])
 
 

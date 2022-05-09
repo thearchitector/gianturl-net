@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from gianturl.app import app
 from gianturl.encoding import encode
-from gianturl.errors import INFINITE_LOOP, URL_TOO_LARGE
+from gianturl.errors import BAD_URL, INFINITE_LOOP, URL_TOO_LARGE
 
 client = TestClient(app)
 
@@ -25,11 +25,17 @@ def test_enlarge_pass():
 def test_enlarge_loop():
     resp = client.post("/api?url=http://testserver/banana")
     assert resp.status_code == 422
-    assert resp.json() == {"detail": (INFINITE_LOOP.detail)}
+    assert resp.json() == {"detail": INFINITE_LOOP.detail}
+
+
+def test_enlarge_badurl():
+    resp = client.post("/api?url=banana")
+    assert resp.status_code == 400
+    assert resp.json() == {"detail": BAD_URL.detail}
 
 
 def test_enlarge_toolong():
-    resp = client.post(f"/api?url={'a' * 1001}")
+    resp = client.post(f"/api?url={'c' * 490}.com")
     assert resp.status_code == 422
     assert resp.json() == {"detail": URL_TOO_LARGE.detail}
 

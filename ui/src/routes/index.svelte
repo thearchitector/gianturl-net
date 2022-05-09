@@ -21,7 +21,7 @@
     async function enlargeURL() {
         let csrftoken = "";
         document.cookie.split(";").forEach((c) => {
-            if (c.indexOf("__HOST-csrftoken") == 0) csrftoken = c.substring(17);
+            if (c.indexOf("__Host-csrftoken") == 0) csrftoken = c.substring(17);
         });
 
         try {

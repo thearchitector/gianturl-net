@@ -2,4 +2,6 @@
 .pytest_cache
 __pycache__
 
+api/ui
+
 *.env
