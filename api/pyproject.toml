@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gianturl"
-version = "0.0.1"
+version = "0.0.0"
 description = "Swedish-made URL enlarger for men."
 authors = ["Elias Gabriel <me@eliasfgabriel.com>"]
 license = "MIT"
@@ -10,21 +10,16 @@ python = "^3.7"
 fastapi = "^0.75.2"
 orjson = "^3.6.8"
 cryptography = "^36.0.2"
-uvicorn = {extras = ["standard"], version = "^0.17.6", optional = true}
-gunicorn = {version = "^20.1.0", optional = true}
 asgi-ratelimit = {extras = ["redis"], version = "^0.8.0"}
 hiredis = "^2.0.0"
 starlette-csrf = "^1.4.3"
 validators = "^0.18.2"
 starlette-securecookies = "^1.0.1"
 
-[tool.poetry.extras]
-deployment = ["uvicorn", "gunicorn"]
-
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
 requests = "^2.27.1"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
