@@ -9,9 +9,6 @@ services:
 
   appedge:
     build: .
-    volumes:
-      - ./api:/gianturl
-      - /gianturl/ui
     env_file:
       - api.env
     ports:

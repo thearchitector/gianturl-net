@@ -45,7 +45,7 @@ FROM tiangolo/uvicorn-gunicorn:python3.8-slim as production
 # user build args
 ARG GROUPID=1000
 ARG USERID=1000
-ARG USERNAME=application
+ARG USERNAME=appuser
 
 # configure env vars for runtime
 ENV APP_NAME=gianturl \
