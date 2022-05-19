@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "gianturl"
 version = "0.0.0"
-description = "Swedish-made URL enlarger for men."
+description = "Enlarging puny URLs by three or four, securely, uniquely, and forever."
 authors = ["Elias Gabriel <me@eliasfgabriel.com>"]
 license = "MIT"
 
@@ -14,7 +14,7 @@ asgi-ratelimit = {extras = ["redis"], version = "^0.8.0"}
 hiredis = "^2.0.0"
 starlette-csrf = "^1.4.3"
 validators = "^0.18.2"
-starlette-securecookies = "^1.0.1"
+starlette-securecookies = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
