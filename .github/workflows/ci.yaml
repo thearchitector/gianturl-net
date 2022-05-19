@@ -38,7 +38,7 @@ jobs:
         with:
           path: |
             ${{ env.POETRY_CACHE_DIR }}
-            .venv
+            api/.venv
           key: ${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('api/poetry.lock') }}
       - run: python -c "import os; os.mkdir('api/ui')"
       - name: Install dependencies

@@ -3,7 +3,6 @@ name = "gianturl"
 version = "0.0.0"
 description = "Enlarging puny URLs by three or four, securely, uniquely, and forever."
 authors = ["Elias Gabriel <me@eliasfgabriel.com>"]
-license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7"
