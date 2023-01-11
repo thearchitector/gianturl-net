@@ -1,6 +1,6 @@
 # GiantURL.net
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/thearchitector/gianturl-net/CI?label=tests&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/thearchitector/gianturl-net/ci.yaml?label=tests&style=flat-square)
 ![GitHub](https://img.shields.io/github/license/thearchitector/gianturl-net?style=flat-square)
 [![Buy a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen?style=flat-square)](https://ecologi.com/eliasgabriel?r=6128126916bfab8bd051026c)
 
