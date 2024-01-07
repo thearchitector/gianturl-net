@@ -9,6 +9,8 @@
         check,
     } from "svelte-awesome/icons";
 
+    const currentYear = (new Date()).getUTCFullYear();
+
     let showURL: boolean = false;
     let originalURL: string = "";
     let longerURL: string = "";
@@ -80,12 +82,12 @@
                     securely, uniquely, and forever.
                 </p>
                 <p>
-                    Want programatic access? Our REST API is rate limited, but
+                    Want programmatic access? Our REST API is rate limited, but
                     public and free. Read <a href="/docs" rel="external">here</a
                     >.
                 </p>
                 <br />
-                <p>&copy; 2022 Elias Gabriel</p>
+                <p>&copy; 2022-{currentYear} Elias Gabriel</p>
             </div>
             <div class="eight columns">
                 {#if !showURL}
