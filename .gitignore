@@ -1,7 +1,3 @@
-.mypy_cache
-.pytest_cache
-__pycache__
-
-api/ui
-
 *.env
+node_modules
+public

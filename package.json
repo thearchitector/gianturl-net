@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "prettier --ignore-path .gitignore --check .",
+    "format": "prettier --ignore-path .gitignore --write ."
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.15.0",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "normalize-css": "^2.3.1",
+    "prettier": "^3.9.10",
+    "prettier-plugin-svelte": "^4.1.1",
+    "skeleton-css": "^2.0.4",
+    "svelte": "^5.57.2",
+    "svelte-awesome": "^3.3.5",
+    "vite": "^8.3.5"
+  },
+  "type": "module"
+}
