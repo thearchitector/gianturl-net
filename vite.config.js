@@ -6,8 +6,12 @@ export default {
   build: {
     outDir: "public",
     rolldownOptions: {
-      input: ["index.html", "src/main.js"],
-      output: { entryFileNames: "src/[name].js" },
+      input: {
+        index: "index.html",
+        "src/main": "src/main.js",
+        gianturl: "static/gianturl.js",
+      },
+      output: { entryFileNames: "[name].js" },
     },
   },
 };
